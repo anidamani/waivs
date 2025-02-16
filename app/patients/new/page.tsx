@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { supabase } from "@/lib/supabase"
+import { createSupabaseClient } from "@/lib/supabase"
 import { useUser } from "@clerk/nextjs"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -37,37 +37,18 @@ export default function NewPatientPage() {
 
     setIsLoading(true)
     try {
-      console.log("Starting patient creation process...")
-      console.log("Clerk User:", {
-        id: user.id,
-        email: user.emailAddresses[0]?.emailAddress,
-        firstName: user.firstName,
-        lastName: user.lastName
-      })
-
-      // First get the therapist id
-      const therapistQuery = supabase
-        .from('therapists')
-        .select('id')
-        .eq('clerk_id', user.id)
-
-      console.log("Supabase Therapist Query (before execution):", therapistQuery)
-
-      const { data: therapist, error: therapistError } = await therapistQuery.single()
-
-      console.log("Therapist query result:", { therapist, therapistError })
-
-      if (therapistError) {
-        console.error('Error fetching therapist:', therapistError)
+        const { user } = useUser();
+        const token = await (user as any).getToken({ template: "supabase" }); // THIS IS A WORKAROUND
+      if (!token) {
         toast({
           title: "Error",
-          description: "Failed to fetch therapist data. Please try again.",
+          description: "Failed to get user token.",
           variant: "destructive",
         })
-        return
+        return;
       }
+      const supabase = createSupabaseClient(token)
 
-      // Create patient
       const { error: createError } = await supabase
         .from('patients')
         .insert([
@@ -77,8 +58,7 @@ export default function NewPatientPage() {
             email: formData.email || null,
             phone: formData.phone || null,
             diagnosis: formData.diagnosis || null,
-            start_date: formData.start_date,
-            therapist_id: therapist.id
+            start_date: formData.start_date
           }
         ])
 
@@ -114,7 +94,7 @@ export default function NewPatientPage() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>Add New Patient</CardTitle>
-          <CardDescription>Enter the patient&apos;s information below.</CardDescription>
+          <CardDescription>Enter the patient's information below.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -22,7 +22,13 @@ export function PatientProfile({ patientId }: { patientId: string }) {
   const { toast } = useToast()
   const { user } = useUser()
   const [patients] = useState<Patient[]>(samplePatients)
-  
+
+  // Properly type the Clerk user with getToken method
+  type ClerkUser = {
+    id: string
+    getToken(params: { template: string }): Promise<string>
+  }
+
   const selectedPatient = patients.find((p) => p.id === patientId)
   const [selectedSession, setSelectedSession] = useState<Session | null>(selectedPatient?.sessions[0] || null)
   const router = useRouter()
@@ -50,7 +56,7 @@ export function PatientProfile({ patientId }: { patientId: string }) {
 
   const handleCreatePatient = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    
+
     if (!user) {
       toast({
         title: "Error",
@@ -61,13 +67,25 @@ export function PatientProfile({ patientId }: { patientId: string }) {
     }
 
     const formData = new FormData(event.currentTarget)
-    
+
     try {
       // First get the therapist id
+
+      const token = user ? await (user as any).getToken({ template: "supabase" }) : null; // THIS IS A WORKAROUND
+
+      if (!token) {
+        toast({
+          title: "Error",
+          description: "Could not get token.  Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { data: therapist, error: therapistError } = await supabase
         .from('therapists')
         .select('id')
-        .eq('clerk_id', user.id)
+        .eq('clerk_id', user?.id || "") // Check if user exists before accessing id
         .single()
 
       if (therapistError) {
@@ -187,4 +205,3 @@ export function PatientProfile({ patientId }: { patientId: string }) {
     </div>
   )
 }
-

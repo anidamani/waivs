@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Calendar, Clock, FileText, Plus, Search, Users } from "lucide-react"
 import type { Patient } from "../lib/types"
-import { supabase } from "@/lib/supabase"
+import { createSupabaseClient } from "@/lib/supabase"
 import { useUser } from "@clerk/nextjs"
 import { DashboardSkeleton } from "./dashboard-skeleton"
 import { useToast } from "@/components/ui/use-toast"
@@ -30,24 +30,11 @@ export function Dashboard() {
       if (!user) return
 
       try {
-        // First get the therapist id
-        const { data: therapist, error: therapistError } = await supabase
-          .from('therapists')
-          .select('id')
-          .eq('clerk_id', user.id)
-          .single()
+        // inside user check now
+        const { user } = useUser();
+        const token = await (user as any).getToken({ template: "supabase" }); // THIS IS A WORKAROUND
+        const supabase = createSupabaseClient(token);
 
-        if (therapistError) {
-          console.error('Error fetching therapist:', therapistError)
-          toast({
-            title: "Error",
-            description: "Failed to fetch therapist data. Please try again.",
-            variant: "destructive",
-          })
-          throw therapistError
-        }
-
-        // Then get all patients for this therapist
         const { data: patientsData, error: patientsError } = await supabase
           .from('patients')
           .select(`
@@ -60,7 +47,6 @@ export function Dashboard() {
               status
             )
           `)
-          .eq('therapist_id', therapist.id)
           .order('created_at', { ascending: false })
 
         if (patientsError) {
@@ -96,7 +82,7 @@ export function Dashboard() {
       .filter((session) => new Date(session.date) > new Date()).length
   }, 0)
 
-  const filteredPatients = patients.filter((patient) => 
+  const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
@@ -249,4 +235,3 @@ export function Dashboard() {
     </div>
   )
 }
-

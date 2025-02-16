@@ -161,6 +161,12 @@ export default function Navbar() {
             )}
           </Button>
           <SignedIn>
+            <Button variant="outline" size="sm" className="gap-2" asChild>
+              <Link href="/patients/new">
+                <Plus className="h-4 w-4" />
+                {t("dashboard.newPatient")}
+              </Link>
+            </Button>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <SignedOut>
