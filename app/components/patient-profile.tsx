@@ -6,29 +6,16 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useToast } from "@/components/ui/use-toast"
 import { FileAudio, Plus, User } from "lucide-react"
 import type { Patient, Session } from "../lib/types"
 import { samplePatients } from "../lib/data"
 import { SessionList } from "./session-list"
 import { SessionDetails } from "./session-details"
-import { useToast } from "@/components/ui/use-toast"
-import { supabase } from "@/lib/supabase"
-import { useUser } from "@clerk/nextjs"
 
 export function PatientProfile({ patientId }: { patientId: string }) {
   const { toast } = useToast()
-  const { user } = useUser()
   const [patients] = useState<Patient[]>(samplePatients)
-
-  // Properly type the Clerk user with getToken method
-  type ClerkUser = {
-    id: string
-    getToken(params: { template: string }): Promise<string>
-  }
-
   const selectedPatient = patients.find((p) => p.id === patientId)
   const [selectedSession, setSelectedSession] = useState<Session | null>(selectedPatient?.sessions[0] || null)
   const router = useRouter()
@@ -52,88 +39,6 @@ export function PatientProfile({ patientId }: { patientId: string }) {
         </Card>
       </div>
     )
-  }
-
-  const handleCreatePatient = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    if (!user) {
-      toast({
-        title: "Error",
-        description: "You must be signed in to create a patient.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    const formData = new FormData(event.currentTarget)
-
-    try {
-      // First get the therapist id
-
-      const token = user ? await (user as any).getToken({ template: "supabase" }) : null; // THIS IS A WORKAROUND
-
-      if (!token) {
-        toast({
-          title: "Error",
-          description: "Could not get token.  Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { data: therapist, error: therapistError } = await supabase
-        .from('therapists')
-        .select('id')
-        .eq('clerk_id', user?.id || "") // Check if user exists before accessing id
-        .single()
-
-      if (therapistError) {
-        console.error('Error fetching therapist:', therapistError)
-        toast({
-          title: "Error",
-          description: "Failed to fetch therapist data. Please try again.",
-          variant: "destructive",
-        })
-        return
-      }
-
-      const newPatient = {
-        name: formData.get('name') as string,
-        dateOfBirth: formData.get('dob') as string || null,
-        email: formData.get('email') as string || null,
-        phone: formData.get('phone') as string || null,
-        therapist_id: therapist.id,
-        start_date: new Date().toISOString(),
-      }
-
-      const { error: createError } = await supabase
-        .from('patients')
-        .insert([newPatient])
-
-      if (createError) {
-        console.error('Error creating patient:', createError)
-        toast({
-          title: "Error",
-          description: "Failed to create new patient. Please try again.",
-          variant: "destructive",
-        })
-        return
-      }
-
-      toast({
-        title: "Success",
-        description: "Patient created successfully!",
-      })
-      router.push('/dashboard')
-    } catch (error) {
-      console.error('Error in patient creation:', error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again later.",
-        variant: "destructive",
-      })
-    }
   }
 
   return (
