@@ -1,0 +1,135 @@
+{
+  "common": {
+    "appName": "Waivs.ai",
+    "language": "Language",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "nav": {
+    "features": "Features",
+    "testimonials": "Testimonials",
+    "pricing": "Pricing",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "home": "Home"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "dashboard": {
+    "title": "Therapist Dashboard",
+    "totalPatients": "Total Patients",
+    "totalSessions": "Total Sessions",
+    "upcomingSessions": "Upcoming Sessions",
+    "searchPatients": "Search patients...",
+    "patientsOverview": "Patients Overview",
+    "newPatient": "New Patient",
+    "startSession": "Start Session",
+    "viewProfile": "View Profile",
+    "status": {
+      "active": "Active",
+      "recent": "Recent",
+      "inactive": "Inactive"
+    }
+  },
+  "testimonials": {
+    "mainTitle": "What Our Users Say",
+    "subtitle": "Success Stories from Our Growing Community",
+    "title1": "Transformed My Practice",
+    "quote1": "Waivs.ai has completely transformed how I handle documentation. I now spend more time with patients and less time on paperwork.",
+    "author1": "Dr. Sarah Johnson",
+    "title2": "Incredible Time Saver",
+    "quote2": "The AI-powered note-taking has saved me hours each week. The accuracy is impressive and it keeps getting better.",
+    "author2": "Michael Chen, SLP",
+    "title3": "Game Changer",
+    "quote3": "Finally, a solution that understands the unique needs of speech therapists. The SOAP note generation is invaluable.",
+    "author3": "Emma Rodriguez, CCC-SLP"
+  },
+  "cta": {
+    "title": "Transform Your Practice Today",
+    "description": "Experience the future of therapy documentation with AI-powered assistance",
+    "startTrial": "Start Free Trial",
+    "offer": "14-day free trial, no credit card required"
+  },
+  "problems": {
+    "mainTitle": "The Documentation Dilemma: Time Lost is Client Care Lost",
+    "subtitle": "Are you facing these challenges?",
+    "paperwork": {
+      "title": "Endless Paperwork",
+      "description": "Spending hours after sessions catching up on notes?"
+    },
+    "compliance": {
+      "title": "Compliance Concerns",
+      "description": "Worried about meeting regulatory requirements and maintaining accurate records?"
+    },
+    "administrative": {
+      "title": "Administrative Overload",
+      "description": "Feeling bogged down by tasks that take you away from clients?"
+    },
+    "burnout": {
+      "title": "Burnout Risk",
+      "description": "Finding it hard to maintain work-life balance due to documentation demands?"
+    }
+  },
+  "features": {
+    "mainTitle": "Powerful Features for Modern Speech Therapy",
+    "subtitle": "Everything you need to streamline your practice and enhance patient care",
+    "time": {
+      "title": "Save Time",
+      "description": "Automate note-taking and documentation to focus more on patient care"
+    },
+    "compliance": {
+      "title": "HIPAA Compliant",
+      "description": "Secure, compliant platform for all your patient data and communications"
+    },
+    "revenue": {
+      "title": "Increase Revenue",
+      "description": "Optimize your practice with efficient scheduling and billing integration"
+    },
+    "focus": {
+      "title": "Patient Focus",
+      "description": "Spend more time with patients and less time on paperwork"
+    },
+    "workflow": {
+      "title": "Smart Workflow",
+      "description": "Streamlined processes for better practice management"
+    },
+    "peace": {
+      "title": "Peace of Mind",
+      "description": "Rest easy knowing your practice is running smoothly and securely"
+    }
+  },
+  "hero": {
+    "title1": "Reclaim Your Time",
+    "title2": "Reclaim Your Practice",
+    "description": "Tired of paperwork taking time away from your patients? Waivs.ai is the AI-powered solution designed to streamline clinical documentation, improve accuracy, and free you to focus on what matters: your patients.",
+    "getStarted": "Get Started Free",
+    "requestDemo": "Request Demo",
+    "noCreditCard": "No credit card required"
+  },
+  "whyChoose": {
+    "mainTitle": "The Waivs.ai Advantage",
+    "subtitle": "Built for Mental Health Professionals, Powered by AI",
+    "automation": {
+      "title": "Effortless Automation",
+      "description": "Transform your clinical notes into actionable data with minimal effort. Simply record or dictate sessions and let Waivs.ai handle the rest."
+    },
+    "scalable": {
+      "title": "Scalable Solutions",
+      "description": "Whether you're a solo practitioner or part of a large practice, Waivs.ai adapts to your needs without compromising quality."
+    },
+    "availability": {
+      "title": "24/7 Availability",
+      "description": "Access your documentation anytime, anywhere. Waivs.ai is always ready to support your practice with consistent performance."
+    }
+  },
+  "patient": {
+    "status": "Status",
+    "actions": "Actions",
+    "fullName": "Full Name",
+    "lastSession": "Last Session",
+    "nextSession": "Next Session",
+    "totalSessions": "Total Sessions"
+  }
+}
